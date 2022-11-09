@@ -995,7 +995,7 @@ GameObject:
   - component: {fileID: 1658649520}
   - component: {fileID: 1658649521}
   m_Layer: 0
-  m_Name: PlayerController
+  m_Name: DrawingController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1024,12 +1024,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1658649519}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cb9bf27bfb3ec849bb5c1e97202edfe, type: 3}
+  m_Script: {fileID: 11500000, guid: 7155e7a049ac7b948b78c35235e6ec35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settings: {fileID: 11400000, guid: 8eabff525dc69af43ae3e4dd8d914607, type: 2}
-  pencil: {drawQuad: {fileID: 1323041126}, gameCamera: {fileID: 212899531}, isDragging: 0, beganPos: {x: 0, y: 0}, currentPos: {x: 0, y: 0}, endPos: {x: 0, y: 0}, deltaPos: {x: 0, y: 0}, deltaNormal: {x: 0, y: 0}, canDraw: 0}
-  isActive: 0
+  pencil:
+    drawQuad: {fileID: 1323041126}
+    gameCamera: {fileID: 212899531}
 --- !u!1 &1775132692
 GameObject:
   m_ObjectHideFlags: 0
