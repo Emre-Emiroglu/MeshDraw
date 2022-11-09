@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class Pencil
+public class InputListener
 {
     #region Fields
+    public Action OnInputStarted;
     public Action OnInputEnded;
     private bool isDragging;
     private Vector2 beganPos;
@@ -17,14 +18,17 @@ public class Pencil
 
     #region Getters
     public bool IsDragging => isDragging;
-    public Vector2 BeganPos => beganPos;
-    public Vector2 CurrentPos => currentPos;
-    public Vector2 EndPos => endPos;
-    public Vector2 DeltaPos => deltaPos;
-    public Vector2 DeltaNormal => deltaNormal;
+    public Vector3 GetMouseWorldPos(Camera gameCam, Camera screenCam)
+    {
+        Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenCam.farClipPlane);
+        return gameCam.ScreenToWorldPoint(mousePos);
+    }
     #endregion
 
     #region Core
+    public InputListener()
+    {
+    }
     private void clearInputs()
     {
         isDragging = false;
@@ -39,11 +43,13 @@ public class Pencil
     #region Input
     private void onMouseDown()
     {
-        beganPos = Input.mousePosition;
+        beganPos = UnityEngine.Input.mousePosition;
+
+        OnInputStarted?.Invoke();
     }
     private void onDrag()
     {
-        currentPos = Input.mousePosition;
+        currentPos = UnityEngine.Input.mousePosition;
 
         deltaPos = currentPos - beganPos;
         deltaNormal = deltaPos.normalized;
@@ -52,21 +58,23 @@ public class Pencil
     }
     private void onMouseUp()
     {
-        endPos = Input.mousePosition;
+        endPos = UnityEngine.Input.mousePosition;
 
         OnInputEnded?.Invoke();
+
+        clearInputs();
     }
     public void ExternalUpdate()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (UnityEngine.Input.GetMouseButtonDown(0))
         {
             onMouseDown();
         }
-        if (Input.GetMouseButton(0))
+        if (UnityEngine.Input.GetMouseButton(0))
         {
             onDrag();
         }
-        if (Input.GetMouseButtonUp(0))
+        if (UnityEngine.Input.GetMouseButtonUp(0))
         {
             onMouseUp();
         }
