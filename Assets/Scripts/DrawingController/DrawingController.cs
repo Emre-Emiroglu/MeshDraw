@@ -53,6 +53,28 @@ public class DrawingController : MonoBehaviour
     }
     #endregion
 
+    #region Calculatse
+    private float calculateXOffset(Vector3[] vertices)
+    {
+        float xOffset = 0f;
+        foreach (Vector3 v in vertices)
+        {
+            xOffset += v.x;
+        }
+        xOffset /= vertices.Length;
+        return xOffset * -1f;
+    }
+    #endregion
+
+    #region Setters
+    private void setDrawResult(Mesh mesh)
+    {
+        drawResult.GetComponent<MeshFilter>().sharedMesh = mesh;
+        drawResult.GetComponent<MeshCollider>().sharedMesh = mesh;
+        drawResult.GetComponent<MeshCollider>().convex = true;
+    }
+    #endregion
+
     #region Executes
     private void drawLine()
     {
@@ -69,14 +91,23 @@ public class DrawingController : MonoBehaviour
     {
         Mesh mesh = new Mesh();
         lr.BakeMesh(mesh, true);
-        drawResult.GetComponent<MeshFilter>().sharedMesh = mesh;
-        drawResult.GetComponent<MeshCollider>().sharedMesh = mesh;
-        drawResult.GetComponent<MeshCollider>().convex = true;
 
+        manipulateVertices(mesh);
+        setDrawResult(mesh);
+    }
+    private void manipulateVertices(Mesh mesh)
+    {
         Vector3[] vertices = mesh.vertices;
+
+        float xOffsett = calculateXOffset(vertices);
+
         for (int i = 0; i < vertices.Length; i++)
         {
-            vertices[i] += Vector3.up * 3;
+            float x = vertices[i].x + xOffsett;
+            float y = vertices[i].y + 3;
+            float z = vertices[i].z;
+            Vector3 newVertices = new Vector3(x, y, z);
+            vertices[i] = newVertices;
         }
         mesh.vertices = vertices;
 
